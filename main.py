@@ -3,6 +3,8 @@
 
 from forbenius import solvefrob
 from water import get_trapped_water
+from polinomial import Polynomial
+
 class Homework8:
     def __init__(self):
         pass
@@ -10,6 +12,16 @@ class Homework8:
 if __name__ == '__main__':
     my_Homework8 = Homework8()
     some_list = [1,2,3,4]
-    seq = [3, 0, 1, 3, 0, 5]
     #print(solvefrob(some_list, 4))
-    print(get_trapped_water(seq))
+
+    my_polinomial = Polynomial()
+    p = Polynomial({0:8,1:2,3:4})
+    q = Polynomial({0:8,1:2,2:8,4:4})
+    '''print(repr(p))
+    print(p*3)
+    print(3*p)
+    x = 3*p
+    p = Polynomial({0: 8, 1: 2, 3: 4})
+    print(p*4 + 5 - x - 1)
+    print(p-p==0)
+    print(p==q)'''

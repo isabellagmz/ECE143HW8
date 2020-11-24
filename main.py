@@ -17,6 +17,7 @@ if __name__ == '__main__':
     my_polinomial = Polynomial()
     p = Polynomial({0:8,1:2,3:4})
     q = Polynomial({0:8,1:2,2:8,4:4})
+
     '''print(repr(p))
     print(p*3)
     print(3*p)
@@ -25,3 +26,11 @@ if __name__ == '__main__':
     print(p*4 + 5 - x - 1)
     print(p-p==0)
     print(p==q)'''
+    #print(p.subs(10))
+    '''p = Polynomial({0:8,1:0,3:4})'''
+
+    p = Polynomial({2: 1, 0: -1})
+    q = Polynomial({1: 1, 0: -1})
+    print(repr(p))
+    print(repr(q))
+    print(p/q)

@@ -1,5 +1,8 @@
 class Polynomial(object):
-    global zero
+    '''
+    Class to solve polynomial problem
+    '''
+
     def __init__(self, the_dict = None):
         self.the_dict = the_dict
 
@@ -22,7 +25,9 @@ class Polynomial(object):
                 if sorted_items[key][1] != 0:
                     if had_prev:
                         eq_str = eq_str + '+ '
-                    eq_str = eq_str + str(sorted_items[key][1]) + ' x '
+                    if sorted_items[key][1] != 1:
+                        eq_str = eq_str + str(sorted_items[key][1]) + ' '
+                    eq_str = eq_str + 'x '
                     had_prev = True
             else:
                 if sorted_items[key][1] != 0:
@@ -97,5 +102,16 @@ class Polynomial(object):
             return True
         if self.__repr__() == other.__repr__():
             return True
-
         return False
+
+    def __truediv__(self, other):
+
+        return 0
+
+    def subs(self, sub_int):
+        total = 0
+        for key in list(self.the_dict.keys()):
+            mult = (sub_int ** key) * self.the_dict[key]
+            total = total + mult
+
+        return total

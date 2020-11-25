@@ -3,6 +3,7 @@
 
 import numpy as np
 import math
+import itertools
 
 def solvefrob(coefs,b):
     '''
@@ -23,9 +24,55 @@ def solvefrob(coefs,b):
     assert type(b) == int
     assert b > 0
 
-    # make sure b has gcd with at least one of these numbers
-    for i in range(b):
+    '''combo_list=[]
+    # get combinations
+    for i in range(len(coefs)):
+        combos = list(itertools.combinations(coefs, i+1))
+        # adding all possible combinations of numbers
+        for j in range(len(combos)):
+            combo_list.append(combos[j])
+
+    # see if they add to b
+    list_to_format = []
+    final_dict = {}
+    index = 0
+    for i in range(len(combo_list)):
+        for j in range(len(combo_list[i])):
+            pass
+    print(combo_list)'''
+
+    matching_numbers = []
+
+    def recursion(subset):
+        for number in coefs:
+            if sum(subset + [number]) < b:
+                recursion(subset + [number])
+            elif sum(subset + [number]) == b:
+                matching_numbers.append(subset + [number])
+
+    recursion([])
+    print(matching_numbers)
+
+    format_dict = {}
+    format_list = []
+    index = 0
+    for i in range(len(matching_numbers)):
+        unique_elems = list(set(matching_numbers[i]))
+        for j in range(len(unique_elems)):
+            for k in range(len(matching_numbers[i])):
+                if matching_numbers[i][k] == unique_elems[j]:
+                    index = index + 1
+            format_dict[unique_elems[j]]=index
+            index = 0
+        format_list.append(format_dict)
+        format_dict = {}
+    print(format_list)
+
+    # finalize the lists
+    final_list = []
+    for i in range(len(coefs)):
         pass
 
     return
+
 

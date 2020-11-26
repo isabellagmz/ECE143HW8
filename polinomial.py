@@ -1,3 +1,4 @@
+import math
 class Polynomial(object):
     '''
     Class to solve polynomial problem
@@ -135,56 +136,86 @@ class Polynomial(object):
         return False
 
     def __truediv__(self, other):
-        new_dict={}
+        max_key_num = []
+        max_key_dom = []
+        output = {}
+        temp = {}
 
-        # check it is not dividing by zero
-        if other.__repr__() == '':
-            return 'Division by zero'
+        num = self.the_dict
+        dom = other.the_dict
 
-        # integer division
-        if isinstance(other, int):
-            return 'other is int'
+        i = 0
+        n = 0
+        ev = 0
 
-        # find degree of denominator
-        deg_den = max(list(other.the_dict.keys()))
-        deg_num = max(list(self.the_dict.keys()))
+        while n == 0:
+            # q/p
+            for key in num:
+                max_key_num.append(key)
+            for key in dom:
+                max_key_dom.append(key)
 
-        # if there is a remainder, do not implement
-        if deg_num < deg_den:
-            return NotImplemented
+            b = max(max_key_num)
+            a = max(max_key_dom)
 
-        # implementing long polynomial division
-        new_denom = self
-        new_num = {}
+            if (a > b):
+                n = 1
+                return 'no good1'
 
-        for key in list(new_denom.the_dict.keys()):
-            for key1 in list(other.the_dict.keys()):
-                # get value and degree of next element
-                #if new_denom.the_dict[key] % other.the_dict[key1] != 0:
-                    #return NotImplemented
-                div = int(new_denom.the_dict[key] / other.the_dict[key1])
-                div_degree = key - key1
+            c = b - a  # getting the difference
 
-                # append to temp dict and final dict
-                new_num[div_degree] = div #makes the new number to return
-                new_dict[div_degree] = div
+            b = num[b]
+            a = dom[a]
+            d = math.gcd(a, b)
 
-                # subraction
-                temp_subtraction = Polynomial.__mul__(Polynomial(new_num), other)
-                print('temp_sub:')
-                print(temp_subtraction.__repr__())
-                if temp_subtraction.__repr__() == '':
+            if (d == 1):
+                d = b
+                ev = 1
+            elif (d != 1 and ev == 0 and b == a):
+                d = 1
+            else:
+                d = int(b / a)
 
-                    return Polynomial(new_dict)
+            temp[c] = d
+            output.update(temp)
 
-                new_denom = Polynomial.__sub__(self, temp_subtraction)
-                print('new_denom:')
-                print(new_denom)
-                new_num = {}
+            div = Polynomial(temp)
+            temp_dom = Polynomial(dom)
 
-            break
+            output1 = temp_dom.__mul__(div)
+            temp_num = Polynomial(num)
 
-        return Polynomial(new_dict)
+            f = temp_num.__sub__(output1)
+            max_key_num = []
+
+            tempp = f.the_dict
+            for key in tempp:
+                max_key_num.append(key)
+
+            b = max(max_key_num)
+            remainder = tempp[b]
+
+            if (remainder != 0 and b == 0):
+                return 'invalid'
+
+            if (b == 0):
+                new = Polynomial(output)
+                n = 1
+                return new
+
+            if (b > a):
+                n = 1
+                return 'no good2'
+
+            num = f.the_dict
+
+            i = i + 1
+            max_key_num.clear()
+            temp = {}
+            ev = 0
+
+            if (i == 20):
+                return 'no good'
 
     def subs(self, sub_int):
         total = 0

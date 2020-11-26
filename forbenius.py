@@ -83,7 +83,7 @@ def solvefrob(coefs,b):
     list(final_list for final_list, _ in itertools.groupby(final_list))
     for i in range(len(final_list)):
         if final_list[i] not in unique_final_list:
-            unique_final_list.append(final_list[i])
+            unique_final_list.append(tuple(final_list[i]))
     # print(unique_final_list)
 
     return unique_final_list

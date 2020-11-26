@@ -51,7 +51,6 @@ def solvefrob(coefs,b):
                 matching_numbers.append(subset + [number])
 
     recursion([])
-    print(matching_numbers)
 
     format_dict = {}
     format_list = []
@@ -66,13 +65,27 @@ def solvefrob(coefs,b):
             index = 0
         format_list.append(format_dict)
         format_dict = {}
-    print(format_list)
 
     # finalize the lists
     final_list = []
-    for i in range(len(coefs)):
-        pass
+    for i in range(len(format_list)):
+        key_list = list(format_list[i].keys())
+        entry = [0] * (len(coefs))
+        for j in range(len(coefs)):
+            for k in range(len(key_list)):
+                if key_list[k] == coefs[j]:
+                    entry[j] = format_list[i][key_list[k]]
+        final_list.append(entry)
 
-    return
+    # get rid of repeated sequences
+    unique_final_list = []
+    final_list.sort()
+    list(final_list for final_list, _ in itertools.groupby(final_list))
+    for i in range(len(final_list)):
+        if final_list[i] not in unique_final_list:
+            unique_final_list.append(final_list[i])
+    # print(unique_final_list)
+
+    return unique_final_list
 
 

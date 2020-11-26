@@ -203,7 +203,7 @@ class Polynomial(object):
                 n = 1
                 return new
 
-            if (b > a):
+            if (b < a):
                 n = 1
                 return 'no good2'
 

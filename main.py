@@ -17,6 +17,7 @@ if __name__ == '__main__':
 
     print(count_paths(3,4,[(0,3),(1,1)]))
 
+
     '''p = Polynomial({0:8,1:2,3:4})
     q = Polynomial({0:8,1:2,2:8,4:4})
 

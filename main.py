@@ -13,18 +13,27 @@ class Homework8:
 
 if __name__ == '__main__':
     my_Homework8 = Homework8()
-    some_list = [1,2,3,5]
-    my_polinomial = Polynomial()
 
-    print(next_permutation((2,3,1)))
+    p = Polynomial({0: 8, 1: 2, 3: 4})  # keys are powers, values are coefficients
+    q = Polynomial({0: 8, 1: 2, 2: 8, 4: 4})
 
-    '''p = Polynomial({0:8,1:2,3:4})
-    q = Polynomial({0:8,1:2,2:8,4:4})
+    print(repr(p))
+    print(p * 3)  # integer multiply
+    print(3 * p) # multiplication is commutative!
+    print(p + q)  # add two polynomials
+    print(p * 4 + 5 - 3 * p - 1)  # compose operations and add/subtract constants
+    print(type(p - p))  # zero requires special handling but is still a Polynomial
+    print(p * q)  # polynomial by polynomial multiplication works as usual
+    print(p.subs(10))  # substitute in integers and evaluate
+    print((p - p) == 0)
+    print(p == q)
 
-    #print(4*p +5 - 3*p -1)
+    p = Polynomial({0: 8, 1: 0, 3: 4})  # keys are powers, values are coefficients
+
+    print(repr(p))
 
     p = Polynomial({2: 1, 0: -1})
     q = Polynomial({1: 1, 0: -1})
-    #print(repr(p))
-    #print(repr(q))
-    print(p/q)'''
+
+    print(p/q)
+    print(p  / Polynomial({1:1,0:-3}))

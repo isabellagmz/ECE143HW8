@@ -1,10 +1,19 @@
 import math
+
+
 class Polynomial(object):
     '''
     Class to solve polynomial problem
     '''
 
-    def __init__(self, the_dict = None):
+    def __init__(self, the_dict=None):
+        # check that what is passed in is a dictionary
+        assert isinstance(the_dict, dict)
+        # check that values are type int
+        for index, value in the_dict.items():
+            assert isinstance(index, int)
+            assert isinstance(value, int)
+
         self.the_dict = the_dict
 
     def __repr__(self):
@@ -35,16 +44,23 @@ class Polynomial(object):
                     if had_prev:
                         eq_str = eq_str + '+ '
                     eq_str = eq_str + str(sorted_items[key][1]) + ' x^(' + str(sorted_items[key][0]) + ') '
+                    had_prev = True
         eq_str = eq_str.strip()
+
         return eq_str
 
     def __mul__(self, other):
-        new_dict={}
+        # check appropriate types
+        assert isinstance(self, Polynomial) or isinstance(self, int)
+        assert isinstance(other, Polynomial) or isinstance(other, int)
 
-        #integer multiplication
+        new_dict = {}
+
+        # integer multiplication
         if isinstance(other, int):
             for key in self.the_dict.keys():
                 new_dict[key] = self.the_dict[key] * other
+
         # polynomial multiplication
         else:
             for key in list(self.the_dict.keys()):
@@ -57,17 +73,20 @@ class Polynomial(object):
                         new_dict[mult_degree] = new_dict[mult_degree] + mult
                     else:
                         new_dict[mult_degree] = mult
+
         return Polynomial(new_dict)
 
     def __rmul__(self, other):
-        new_dict = {}
-        for key in self.the_dict.keys():
-            new_dict[key] = self.the_dict[key] * other
-        return Polynomial(new_dict)
+        # check appropriate types
+        assert isinstance(self, Polynomial) or isinstance(self, int)
+        assert isinstance(other, Polynomial) or isinstance(other, int)
+
+        return self.__mul__(other)
 
     def __add__(self, other):
+        '''Method to add a polynomial and another or a polynomial and an int'''
         new_dict = {}
-        #populate new dict with self values
+        # populate new dict with self values
         for key in list(self.the_dict.keys()):
             new_dict[key] = self.the_dict[key]
 
@@ -86,11 +105,21 @@ class Polynomial(object):
                         new_dict[key] = self.the_dict[key] + other.the_dict[key]
                     elif key1 not in new_dict.keys():
                         new_dict[key1] = other.the_dict[key1]
+
+        # remove any zeroes from dictionary
+        keys = new_dict.keys()
+        for key in list(keys):
+            if new_dict[key] == 0:
+                new_dict.pop(key, None)
+
         return Polynomial(new_dict)
 
     def __sub__(self, other):
-        new_dict = {}
+        # check appropriate values
+        assert isinstance(self, Polynomial) or isinstance(self, int)
+        assert isinstance(other, Polynomial) or isinstance(other, int)
 
+        new_dict = {}
         # populate new dict with self values
         for key in list(self.the_dict.keys()):
             new_dict[key] = self.the_dict[key]
@@ -111,39 +140,57 @@ class Polynomial(object):
                     elif key1 not in new_dict.keys():
                         new_dict[key1] = -other.the_dict[key1]
 
+        # remove any zeroes from dictionary
+        keys = new_dict.keys()
+        for key in list(keys):
+            if new_dict[key] == 0:
+                new_dict.pop(key, None)
+
         return Polynomial(new_dict)
 
     def __rsub__(self, other):
+        # check appropriate types
+        assert isinstance(self, Polynomial) or isinstance(self, int)
+        assert isinstance(other, Polynomial) or isinstance(other, int)
         new_dict = {}
-        # make polynomial negative
-        for key in list(self.the_dict.keys()):
-            new_dict[key] = - self.the_dict[key]
 
-        # subtracting integer
-        if isinstance(other, int):
-            if 0 in new_dict.keys():
-                new_dict[0] = other + self.the_dict[0]
-            else:
-                new_dict[0] = other
+        for index, value in self.the_dict.items():
+            new_dict[index] = -value
 
-        return Polynomial(new_dict)
+        new = Polynomial(new_dict)
+        other = -other
+        return new.__sub__(other)
 
     def __eq__(self, other):
-        if other == 0 and self.__repr__() == '':
-            return True
-        if self.__repr__() == other.__repr__():
+        ''' Check if polynomials are equal to each other or equal to 0'''
+
+        # check appropriate types
+        assert isinstance(self, Polynomial) or isinstance(self, int)
+        assert isinstance(other, Polynomial) or isinstance(other, int)
+
+        # check integer
+        if (isinstance(other, int)):
+            temp = self.the_dict
+            value = 0
+            for index, values in temp.items():
+                value = values
+            return value == 0
+
+        if self.the_dict == other.the_dict:
             return True
         return False
 
     def __truediv__(self, other):
+        # check appropriate types
+        assert isinstance(self, Polynomial) or isinstance(self, int)
+        assert isinstance(other, Polynomial) or isinstance(other, int)
+
         max_key_num = []
         max_key_dom = []
         output = {}
         temp = {}
-
         num = self.the_dict
         dom = other.the_dict
-
         i = 0
         n = 0
         ev = 0
@@ -155,12 +202,21 @@ class Polynomial(object):
             for key in dom:
                 max_key_dom.append(key)
 
-            b = max(max_key_num)
-            a = max(max_key_dom)
+            # find degree of denom and num
+            if len(max_key_num) == 0:
+                b = 0
+            else:
+                b = max(max_key_num)
 
+            if len(max_key_dom) == 0:
+                a = 0
+            else:
+                a = max(max_key_dom)
+
+            # if divior has bigger degree than dividend, error
             if (a > b):
                 n = 1
-                return 'no good1'
+                raise NotImplementedError
 
             c = b - a  # getting the difference
 
@@ -192,11 +248,18 @@ class Polynomial(object):
             for key in tempp:
                 max_key_num.append(key)
 
-            b = max(max_key_num)
-            remainder = tempp[b]
+            if len(max_key_num) == 0:
+                b = 0
+            else:
+                b = max(max_key_num)
+
+            if len(tempp) == 0:
+                remainder = 0
+            else:
+                remainder = tempp[b]
 
             if (remainder != 0 and b == 0):
-                return 'invalid'
+                raise NotImplementedError
 
             if (b == 0):
                 new = Polynomial(output)
@@ -205,7 +268,7 @@ class Polynomial(object):
 
             if (b < a):
                 n = 1
-                return 'no good2'
+                raise NotImplementedError
 
             num = f.the_dict
 
@@ -213,9 +276,6 @@ class Polynomial(object):
             max_key_num.clear()
             temp = {}
             ev = 0
-
-            if (i == 20):
-                return 'no good'
 
     def subs(self, sub_int):
         total = 0

@@ -5,6 +5,7 @@ from forbenius import solvefrob
 from water import get_trapped_water
 from polinomial import Polynomial
 from grid_path import count_paths
+from permutation import next_permutation
 
 class Homework8:
     def __init__(self):
@@ -15,8 +16,7 @@ if __name__ == '__main__':
     some_list = [1,2,3,5]
     my_polinomial = Polynomial()
 
-    print(count_paths(3,4,[(0,3),(1,1)]))
-
+    print(next_permutation((2,3,1)))
 
     '''p = Polynomial({0:8,1:2,3:4})
     q = Polynomial({0:8,1:2,2:8,4:4})
